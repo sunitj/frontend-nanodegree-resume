@@ -6,9 +6,11 @@ var bio = {
     "contacts"  :   {
         "mobile"    :   "",
         "email"     :   "sunitj@umich.edu",
-        "twitter"   :   "@SunitJain",
-        "github"    :   "sunitj",
-        "location"  :   "Ann Arbor, MI, USA"
+        "twitter"   :   "https://twitter.com/SunitJain",
+        "github"    :   "https://github.com/sunitj?tab=activity",
+        "linkedin"  :   "https://www.linkedin.com/in/jainsunit",
+        "tumblog"   :   "http://thesunit.tumblr.com/",
+        "location"  :   "https://www.google.com/maps/place/University+of+Michigan/@42.2780436,-83.7382241,15z/data=!4m2!3m1!1s0x0:0x5ba14e5178e997e3!6m1!1e1"
     },
     "biopic"     :   "images/fry.jpg",
     "welcomeMessage"   :   "Welcome to my first attampt at a JavaScript website!",
@@ -19,10 +21,12 @@ var formattedName = HTMLheaderName.replace("%data%", bio.fullName);
 var formattedRole = HTMLheaderRole.replace("%data%", bio.role);
 
 var formattedSkills = HTMLskillsStart.replace("%data%",bio.skills);
-var formattedEmail = HTMLemail.replace("%data%",bio.contacts.email);
-var formattedTwitter = HTMLtwitter.replace("%data%",bio.contacts.twitter);
-var formattedGitHub = HTMLgithub.replace("%data%",bio.contacts.github);
-var formattedLoc = HTMLlocation.replace("%data%",bio.contacts.location);
+var formattedEmail = addHyperLink(HTMLemail,bio.contacts.email,bio.contacts.email)
+var formattedTwitter = addHyperLink(HTMLtwitter,bio.contacts.twitter, "@SunitJain");
+var formattedGitHub = addHyperLink(HTMLgithub,bio.contacts.github,"sunitj");
+var formattedLinkedIn = addHyperLink(HTMLlinkedIn,bio.contacts.linkedin, "Sunit Jain");
+var formattedTumblog = addHyperLink(HTMLblog,bio.contacts.tumblog, "A deBugged Life");
+var formattedLoc = addHyperLink(HTMLlocation,bio.contacts.location, "Ann Arbor, MI");
 var formattedWelcome = HTMLwelcomeMsg.replace("%data%",bio.welcomeMessage);
 
 $("#header").prepend(formattedRole);
@@ -31,6 +35,8 @@ $("#header").prepend(formattedName);
 $("#topContacts").append(formattedEmail);
 $("#topContacts").append(formattedTwitter);
 $("#topContacts").append(formattedGitHub);
+$("#topContacts").append(formattedLinkedIn);
+$("#topContacts").append(formattedTumblog);
 $("#topContacts").append(formattedLoc);
 
 $("#header").append(formattedPic);
@@ -51,12 +57,13 @@ var work = {
             "title"         :   "Research Computing Specialist",
             "location"      :   "Ann Arbor, MI, USA",
             "dates"         :   "2009 - present",
-            "description"   :   "Still working here!"
+            "description"   :   "Still working here!",
+            "url"           :   ""
         }
     ],
     display() {
         if (work.jobs.length > 0) {
-            for (job in work.jobs) {
+            for (var job in work.jobs) {
                 $("#workExperience").append(HTMLworkStart);
                 var formattedWorkEmp = HTMLworkEmployer.replace("%data%",work.jobs[job].employer);
                 var formattedWorkTitle = HTMLworkTitle.replace("%data%",work.jobs[job].title);
@@ -75,35 +82,36 @@ var work = {
 
 work.display();
 
+// Projects
 var projects = {
     "project"   :   [
         {
             "title"     :   "SuperMom: Super Meta*omics Miner",
             "dates"     :   "November 2014 - present",
             "description"   :   "Mining meta*omic data using graph databases.",
-            "images"     :   ["images/fry.jpg"],
-            "url"       :   ""
+            "images"     :   ["https://raw.githubusercontent.com/sunitj/SuperMoM/master/IMG/images/graphDB_schema.png"],
+            "url"       :   "https://github.com/sunitj/SuperMoM"
         },
         {
             "title"     :   "ESOM scripts",
             "dates"     :   "August 2009 - present",
             "description"   :   "Workflow scripts for binning and visualization of metagenomic data usnig ESOM",
             "images"     :   ["images/fry.jpg"],
-            "url"       :   ""
+            "url"       :   "https://github.com/tetramerFreqs/Binning"
         },
         {
             "title"     :   "Geomicro scripts",
             "dates"     :   "August 2009 - present",
             "description"   :   "General purpose scripts to manage Biological data",
             "images"     :   [ "images/fry.jpg"],
-            "url"       :   ""
+            "url"       :   "https://github.com/Geo-omics/scripts"
         }
     ],
     display() {
         if (projects.project.length > 0) {
-            for (num in projects.project) {
+            for (var num in projects.project) {
                 $("#projects").append(HTMLprojectStart);
-                var formattedProjTitle = HTMLprojectTitle.replace("%data%",projects.project[num].title);
+                var formattedProjTitle = addHyperLink(HTMLprojectTitle, projects.project[num].url, projects.project[num].title)
                 var formattedProjDates = HTMLprojectDates.replace("%data%",projects.project[num].dates);
                 var formattedProjDesc = HTMLprojectDescription.replace("%data%",projects.project[num].description);
                 
@@ -113,7 +121,7 @@ var projects = {
                 
                 
                 if (projects.project[num].images.length > 0) {
-                    for (image in projects.project[num].images) {
+                    for (var image in projects.project[num].images) {
                         var formattedProjImage = HTMLprojectImage.replace("%data%",projects.project[num].images[image]);
                         $(".project-entry:last").append(formattedProjImage);
                     }
@@ -129,19 +137,21 @@ projects.display();
 // Education
 var education = {
   "schools"     :   [
+        {
+        "name"      :   "University of Michigan",
+        "location"      :   "Ann Arbor, MI, USA",
+        "degree"    :   "Masters",
+        "major"     :   ["Bioinformatics"],
+        "graduation":   2011,
+        "url"       :   "http://www.ccmb.med.umich.edu/"
+    },
     {
         "name"      :   "Amity University",
         "location"      :   "New Delhi, India",
         "degree"    :   "B.Tech",
         "major"     :   ["Bioinformatics"],
-        "graduation":   2008
-    },
-    {
-        "name"      :   "University of Michigan",
-        "location"      :   "Ann Arbor, MI, USA",
-        "degree"    :   "Masters",
-        "major"     :   ["Bioinformatics"],
-        "graduation":   2011
+        "graduation":   2008,
+        "url"       :   "http://www.amity.edu/aib/"
     }
   ],
   "onlineCourses"   :   [
@@ -149,38 +159,38 @@ var education = {
         "title"     :   "JavaScript Basics",
         "school"    :   "Udacity",
         "dates"     :   "2015",
-        "url"       :   "http://www.sunitjain.com"
+        "url"       :   "https://www.udacity.com/course/viewer#!/c-ud804/"
     },
     {
         "title"     :   "Practical Machine Learning",
         "school"    :   "Coursera",
         "dates"     :   "2015",
-        "url"       :   "http://www.sunitjain.com"
-    },
-    {
-        "title"     :   "Data Scientist Toolbox",
-        "school"    :   "Coursera",
-        "dates"     :   "2014",
-        "url"       :   "http://www.sunitjain.com"
+        "url"       :   "https://www.coursera.org/course/predmachlearn"
     },
     {
         "title"     :   "Reproducible Research",
         "school"    :   "Coursera",
         "dates"     :   "2015",
-        "url"       :   "http://www.sunitjain.com"
-    },
+        "url"       :   "https://www.coursera.org/course/repdata"
+    },    
     {
         "title"     :   "Exploratory Data Analysis",
         "school"    :   "Coursera",
         "dates"     :   "2014",
-        "url"       :   "http://www.sunitjain.com"
+        "url"       :   "https://www.coursera.org/course/exdata"
+    },
+    {
+        "title"     :   "Data Scientist Toolbox",
+        "school"    :   "Coursera",
+        "dates"     :   "2014",
+        "url"       :   "https://www.coursera.org/course/datascitoolbox"
     }
   ],
     display() {
         if (education.schools.length > 0) {
             $("#education").append(HTMLschoolStart);
             for (var num in education.schools) {
-                var formattedEduName = HTMLschoolName.replace("%data%", education.schools[num].name);
+                var formattedEduName = addHyperLink(HTMLschoolName,education.schools[num].url,education.schools[num].name);
                 var formattedEduDegree = HTMLschoolDegree.replace("%data%", education.schools[num].degree);
                 var formattedEduMajor = HTMLschoolMajor.replace("%data%", education.schools[num].major);
                 var formattedEduGrad = HTMLschoolDates.replace("%data%", education.schools[num].graduation);
@@ -190,25 +200,22 @@ var education = {
                 
                 $(".education-entry:last").append(catNameDegree);
                 $(".education-entry:last").append(formattedEduGrad);
-                $(".education-entry:last").append(formattedEduMajor);
                 $(".education-entry:last").append(formattedEduLoc);
+                $(".education-entry:last").append(formattedEduMajor);
             }
         }
         
         if (education.onlineCourses.length > 0) {
-            $(".education-entry:last").append(HTMLonlineClasses);
+            $("#online").append(HTMLonlineStart);
             for (var num in education.onlineCourses) {
-                var formattedEduTitle = HTMLonlineTitle.replace("%data%", education.onlineCourses[num].title);
+                var formattedEduTitle = addHyperLink(HTMLonlineTitle,education.onlineCourses[num].url, education.onlineCourses[num].title);
                 var formattedEduName = HTMLonlineSchool.replace("%data%", education.onlineCourses[num].school);
                 var formattedEduDates = HTMLonlineDates.replace("%data%", education.onlineCourses[num].dates);
-                var formattedEduUrl = HTMLonlineURL.replace("#", education.onlineCourses[num].url);
-                formattedEduUrl = formattedEduUrl.replace("%data%", education.onlineCourses[num].url);
                 
                 var catNameDegree = formattedEduTitle + formattedEduName;
                 
-                $(".education-entry:last").append(catNameDegree);
-                $(".education-entry:last").append(formattedEduDates);
-                $(".education-entry:last").append(formattedEduUrl);
+                $(".online-entry:last").append(catNameDegree);
+                $(".online-entry:last").append(formattedEduDates);
             }
         }
     }
@@ -216,9 +223,20 @@ var education = {
 
 education.display();
 
+function addHyperLink(html,url,text){
+    if (! text) { text = url; }
+    
+    var formattedURL = html.replace("#", url);
+    formattedURL = formattedURL.replace("%data%",text);
+    
+    return formattedURL;
+}
+
 $("#footerContacts").append(formattedEmail);
 $("#footerContacts").append(formattedTwitter);
 $("#footerContacts").append(formattedGitHub);
+$("#footerContacts").append(formattedLinkedIn);
+$("#footerContacts").append(formattedTumblog);
 $("#footerContacts").append(formattedLoc);
 
 function inName(){
