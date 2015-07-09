@@ -231,4 +231,4 @@ function inName(){
 }
 
 $("#main").append(internationalizeButton);
-$("#mapDiv").append(googleMap);
+$("#map-div").append(googleMap);
